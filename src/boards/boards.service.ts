@@ -28,19 +28,46 @@ export class BoardsService {
    }
 
     async findOne(id: string, ownerId: string) {
-    const board = await this.prisma.board.findFirst({
-        where: {
-        id,
-        ownerId,
-        deletedAt: null,
-        },
-    });
+        const board = await this.prisma.board.findFirst({
+            where: {
+            id,
+            ownerId,
+            deletedAt: null,
+            },
+            include: {
+            columns: {
+                orderBy: {
+                order: 'asc',
+                },
+                include: {
+                tasks: {
+                    where: {
+                    deletedAt: null,
+                    },
+                    orderBy: {
+                    position: 'asc',
+                    },
+                    include: {
+                    assignee: {
+                        select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        },
+                    },
+                    labels: true,
+                    },
+                },
+                },
+            },
+            },
+        });
 
-    if (!board) {
-        throw new NotFoundException('Board not found');
-    }
+        if (!board) {
+            throw new NotFoundException('Board not found');
+        }
 
-    return board;
+        return board;
     }
 
     async update(
