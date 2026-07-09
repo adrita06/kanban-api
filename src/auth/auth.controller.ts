@@ -2,6 +2,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { Get, Req, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { GetUser } from './decorators/get-user.decorator';
+import type { JwtPayload } from './types/jwt-payload.type';
 
 @Controller('auth')
 export class AuthController {
@@ -18,5 +22,11 @@ export class AuthController {
         loginDto.email,
         loginDto.password,
     );
+  }
+  
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  profile(@GetUser() user: any) {
+    return user;
   }
 }
