@@ -40,7 +40,7 @@ export class ColumnsService {
     });
   }
 
-  private async findOwnedColumn(
+  async findOwnedColumn(
     columnId: string,
     ownerId: string,
     ) {
@@ -88,4 +88,6 @@ export class ColumnsService {
         },
     });
  }
+
+ 
 }

@@ -7,5 +7,7 @@ import { BoardsModule } from '../boards/boards.module';
   imports: [BoardsModule],
   controllers: [ColumnsController],
   providers: [ColumnsService],
+  exports: [ColumnsService],
+
 })
 export class ColumnsModule {}
